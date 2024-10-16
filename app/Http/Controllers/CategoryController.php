@@ -12,19 +12,16 @@ class CategoryController extends Controller
         $categories = Category::all();
         return view('categories.index', compact('categories'));
     }
-
     public function create()
     {
         return view('categories.create');
     }
-
     public function store(Request $request)
     {
         $request->validate([
             'name'        => 'required|unique:categories|string|max:255',
             'description' => 'nullable|string',
         ]);
-
         try {
             Category::create($request->all());
             return redirect()->route('categories.index')->with('success', 'Category created successfully');
@@ -32,16 +29,18 @@ class CategoryController extends Controller
             return redirect()->route('categories.index')->with('error', $err->getMessage());
         }
     }
-
+    public function show(Category $category)
+    {
+        return view('categories.show', compact('category'));
+    }
     public function edit(Category $category)
     {
         return view('categories.edit', compact('category'));
     }
-
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name'        => 'required|unique:categories|string|max:255',
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
             'description' => 'nullable|string',
         ]);
 
@@ -52,6 +51,7 @@ class CategoryController extends Controller
             return redirect()->route('categories.index')->with('error', $err->getMessage());
         }
     }
+
 
     public function destroy(Category $category)
     {

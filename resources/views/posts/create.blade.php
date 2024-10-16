@@ -26,6 +26,14 @@
             <textarea name="content" id="content" class="form-control"></textarea>
         </div>
         <div class="form-group">
+            <label for="author">Author</label>
+            <select name="author_id" class="form-control">
+                @foreach($authors as $author)
+                    <option value="{{ $author->id }}">{{ $author->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label for="category">Category</label>
             <select name="category_id" class="form-control">
                 <option value="">Choose</option>
