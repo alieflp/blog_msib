@@ -1,25 +1,31 @@
+<!-- resources/views/posts/edit.blade.php -->
+
 @extends('layouts.app')
 
-@section('content')
-    <div class="container mt-5">
-        <h1>Edit Post</h1>
+@section('title', 'Edit Post')
 
-        <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
+@section('content')
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Edit Post</h1>
+        <a href="{{ route('posts.index') }}" class="inline-block bg-gray-500 text-white rounded px-4 py-2 mt-4">Back</a>
+
+        <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data" class="mt-6 space-y-6">
             @csrf
             @method('PUT')
 
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ old('title', $post->title) }}" required>
+            <div>
+                <label for="title" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Title</label>
+                <input type="text" name="title" id="title" value="{{ old('title', $post->title) }}" class="block w-full px-3 py-2 border border-gray-300 rounded-md" required>
             </div>
 
-            <div class="mb-3">
-                <label for="content" class="form-label">Content</label>
-                <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content', $post->content) }}</textarea>
+            <div>
+                <label for="content" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Content</label>
+                <textarea name="content" id="content" class="block w-full px-3 py-2 border border-gray-300 rounded-md" rows="5" required>{{ old('content', $post->content) }}</textarea>
             </div>
-            <div class="mb-3">
-                <label for="author_id" class="form-label">Author</label>
-                <select class="form-select" id="author_id" name="author_id" required>
+
+            <div>
+                <label for="author_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Author</label>
+                <select name="author_id" id="author_id" class="block w-full px-3 py-2 border border-gray-300 rounded-md" required>
                     @foreach($authors as $author)
                         <option value="{{ $author->id }}" {{ $post->author_id == $author->id ? 'selected' : '' }}>
                             {{ $author->name }}
@@ -27,9 +33,10 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="category_id" class="form-label">Category</label>
-                <select class="form-select" id="category_id" name="category_id" required>
+
+            <div>
+                <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
+                <select name="category_id" id="category_id" class="block w-full px-3 py-2 border border-gray-300 rounded-md" required>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ $post->category_id == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
@@ -37,14 +44,17 @@
                     @endforeach
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="image" class="form-label">Image</label>
-                <input type="file" class="form-control" id="image" name="image">
-                <small class="form-text text-muted">Leave empty if you don't want to change the image.</small>
+
+            <div>
+                <label for="image" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Image</label>
+                <input type="file" name="image" id="image" class="block w-full px-3 py-2 border border-gray-300 rounded-md">
+                <small class="block text-sm text-gray-500 dark:text-gray-400 mt-1">Leave empty if you don't want to change the image.</small>
             </div>
 
-            <button type="submit" class="btn btn-primary">Update Post</button>
-            <a href="{{ route('posts.index') }}" class="btn btn-secondary">Cancel</a>
+            <div class="mt-6">
+                <button type="submit" class="bg-indigo-600 text-white rounded-md px-4 py-2">Update Post</button>
+                <a href="{{ route('posts.index') }}" class="ml-2 bg-gray-500 text-white rounded-md px-4 py-2">Cancel</a>
+            </div>
         </form>
     </div>
 @endsection

@@ -1,26 +1,42 @@
+<!-- resources/views/posts/show.blade.php -->
+
 @extends('layouts.app')
 
+@section('title', $post->title)
+
 @section('content')
-    <h1>{{ $post->title }}</h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <h1 class="text-3xl font-semibold text-gray-900 dark:text-gray-100 mb-6">{{ $post->title }}</h1>
 
-    @if ($post->image)
-        <img src="{{ asset('storage/'.$post->image) }}" alt="Post image" class="img-thumbnail" style="width: 300px; height: auto;">
-    @else
-        <img src="https://via.placeholder.com/300" alt="Default Image" class="img-thumbnail">
-    @endif
+        @if ($post->image)
+            <img src="{{ asset('storage/'.$post->image) }}" alt="Post image" class="w-full max-w-md rounded-md shadow-lg mb-6">
+        @else
+            <img src="https://via.placeholder.com/300" alt="Default Image" class="w-full max-w-md rounded-md shadow-lg mb-6">
+        @endif
 
-    <p>{{ $post->content }}</p>
-    <p>Category: {{ $post->category->name }}</p>
-    <p>Status:
-        <span class="badge {{ $post->is_published ? 'bg-success' : 'bg-secondary' }}">
-            {{ $post->is_published ? 'Published' : 'Draft' }}
-        </span>
-    </p>
-    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-warning">Edit</a>
-    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="btn btn-danger">Delete</button>
-    </form>
-    <a href="{{ route('posts.index') }}" class="btn btn-secondary">Back to Posts</a>
+        <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">{{ $post->content }}</p>
+
+        <p class="text-gray-500 dark:text-gray-400">
+            Category: <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $post->category->name }}</span>
+        </p>
+
+        <p class="mt-2 text-gray-500 dark:text-gray-400">
+            Status:
+            <span class="inline-block px-3 py-1 text-sm font-medium {{ $post->is_published ? 'bg-green-500 text-white' : 'bg-gray-500 text-white' }} rounded">
+                {{ $post->is_published ? 'Published' : 'Draft' }}
+            </span>
+        </p>
+
+        <div class="mt-6 space-x-2">
+            <a href="{{ route('posts.edit', $post->id) }}" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded-md">Edit</a>
+
+            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="inline-block">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="inline-block bg-red-500 text-white px-4 py-2 rounded-md" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
+            </form>
+
+            <a href="{{ route('posts.index') }}" class="inline-block bg-gray-500 text-white px-4 py-2 rounded-md">Back</a>
+        </div>
+    </div>
 @endsection
